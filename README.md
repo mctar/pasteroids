@@ -19,6 +19,7 @@ Pasta Asteroids is a fast, arcade-style shooter built on Canvas 2D. Pilot a ship
 - Recording is on by default and keeps the last N seconds of fixed-timestep inputs.
 - F6 toggles recording, F7 exports the replay JSON, and F8 loads a replay for playback.
 - During playback, live keyboard input is disabled and recorded inputs drive the game.
+- Replays store the RNG seed plus initial world setup (wave, ship pose, initial noodles) so playback is deterministic.
 
 ## Local Development
 - `npm install`
@@ -33,7 +34,7 @@ Pasta Asteroids is a fast, arcade-style shooter built on Canvas 2D. Pilot a ship
 - `HeadlessRunner` (`src/game/testkit/HeadlessRunner.ts`) runs fixed-timestep simulation without DOM/Canvas.
 - `TestInputSource` (`src/game/testkit/TestInputSource.ts`) feeds scripted inputs per tick.
 - `Invariants` (`src/game/testkit/Invariants.ts`) scans for NaN/Infinity in transforms and rigid bodies.
-- Scenario and determinism tests run in Node via Vitest.
+- Scenario and determinism tests run in Node via Vitest, including seeded replays and stability checks.
 
 ## Deploy (GitHub Pages)
 1. Push to a GitHub repo.
@@ -46,6 +47,7 @@ To preview the Pages base path locally:
 
 ## Architecture Overview
 - `World` (`src/game/World.ts`): owns entity ids, component maps, RNG, and spawn helpers.
+- `WorldInitParams`: seed, starting wave, and ship transform for deterministic runs and replays.
 - Components: `Transform`, `RigidBody`, `ShipControl`, `WeaponState`, `Noodle`, `Projectile`, `Lifetime`.
 - Systems:
   - `InputSystem`: translates keyboard input into ship controls and toggles.
